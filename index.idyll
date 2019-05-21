@@ -1,0 +1,334 @@
+[meta title:"Idyll Tutorial Northwestern" description:"Short description of your project" /]
+
+[Header
+  fullWidth: true
+  title:"Idyll Tutorial"
+  subtitle:"An introduction/demo to Idyll, D3 custom components and an example"
+  author:"Francis Nguyen"
+  background:"#FFF"
+  color:"#007652"
+   /]
+
+
+[Aside className:"title"]
+```
+[Header
+  fullWidth: true
+  title:"Idyll Tutorial"
+  subtitle:"An introduction/demo to Idyll, D3 custom components and an example"
+  author:"Francis Nguyen"
+  background:"#FFF"
+  color:"#007652"
+   /]
+```
+[/Aside]
+
+[small]
+Parts of tutorial, words and content adapted from Matt Conlen's excellent posts:
+https://mathisonian.github.io/idyll/a-walk-on-the-idyll-side/ and https://idyll-lang.github.io/idyll-d3-component/
+[/small]
+
+[br/][br/]
+
+[small]
+In this document the code blocks with a [span style:`{background:"#F99F58"}`]orange border[/span] show the Idyll markup used
+to create the output you see.
+[/small]
+
+## Introduction
+
+Download and use Idyll! Make sure that you have Node/npm installed. You can go to [link text:"the site" url:"https://nodejs.org/en/" /] download it.
+Follow the Idyll [link text:"quick guide" url:"https://idyll-lang.org/docs/getting-started" /] to get started!
+
+Idyll provides command line tools to scaffold the process of building a new page similar to `create-react-app` or `npm init` (sort of).
+After you have downloaded Idyll via npm, create a new Idyll project:
+
+```
+idyll create
+```
+
+This will bring you through a brief series of questions to begin your project.
+
+
+This page is generated via the file `index.idyll`. To compile this post using
+idyll, run the command `idyll` inside of this directory.
+
+Idyll posts are designed to support interaction and
+data-driven graphics.
+
+Configuration can be done via the `idyll` field in `package.json`.
+When changing `package.json` make sure to re-run idyll on command line to update the changes.
+
+## Markup
+
+Idyll is based on Markdown.
+
+[Aside]
+```
+* lists
+* of
+* items,
+```
+
+```
+1. and numbered
+2. lists
+3. of items,
+```
+[/Aside]
+
+You can use familiar syntax
+to create **bold** (`**bold**` ) and *italic* (``*italic*` ) styles,
+
+* lists
+* of
+* items,
+
+1. and numbered
+2. lists
+3. of items,
+
+in addition to [hyperlinks](https://idyll-lang.org) and images:
+
+![logo](static/images/mucollective-logo.png)
+
+```
+![logo](static/images/mucollective-logo.png)
+```
+
+## Components
+
+Components can be embedded using a bracket syntax:
+
+```
+[Range /]
+```
+
+and can contain nested content:
+
+```
+[Equation]e = mc^{2}[/Equation]
+```
+
+Components accept properties:
+
+```
+[Range value:x min:0 max:1 /]
+```
+
+that can be bound to variables to achieve interactivity (more in next section).
+
+
+A variety of components are included by default. See [link text:"all the available components" url:"https://idyll-lang.org/docs/components/" /].
+You can also use any html tag, for example: `[div] A div! [/div]`.
+
+To create your own, add it to the `components/` folder. There are examples of how to use Idyll with React and D3 based components already included.
+
+## External Components
+Idyll can also utilize components found on npm built as React components.
+Note that some components might not work with Idyll and can potentially break on embed.
+
+An example of a React component that we can use is the [react simple pie chart](https://www.npmjs.com/package/react-simple-pie-chart).
+The `ReactSimplePieChart` component is a npm hosted component that we can download:
+
+```
+npm install --save react-simple-pie-chart
+```
+
+After saving a React component to our dependencies, Idyll knows to import it for use in its runtime, allowing us to
+directly imbed a `[ReactSimplePieChart]` as a component in our markdown.
+
+
+## Interactivity and variables
+
+[small]
+More information available at : https://mathisonian.github.io/idyll/a-walk-on-the-idyll-side/
+[/small]
+
+Idyll makes it easy to instantiate, manipulate and display variables on a page.
+
+[Aside]
+```
+[var name:"x" value:5 /]
+```
+
+```
+Update x:
+
+[Range min:0 max:100 value:x /]
+Value of x: [Display value:x /]
+```
+[/Aside]
+
+For example, you can initialize a variable and bind its value to a range slider.
+When the slider is moved, the variable is automatically updated, and anything dependencies of the variable change as well.
+Note that any slider that is dependent on a variable is automatically updated.
+So any interaction that triggers the update of a variable also triggers the update of all components dependent on that variable.
+
+[var name:"x" value:5 /]
+
+Update x:
+
+0 [Range min:0 max:100 value:x /] 100
+
+Value of x: [Display value:x /]
+
+[Aside]
+```
+[derived name:"y" value:`100 - x` /]
+```
+
+```
+Update x:
+0 [Range min:0 max:100 value:x /] 100
+Value of x: [Display value:x /]
+Value of y: [Display value:y /]
+```
+[/Aside]
+
+Derived variables can also be used as spreadsheet-like functionality.
+For example, I can define `y` as follows:
+
+[Equation]
+  y = 100 - x
+[/Equation]
+
+[derived name:"y" value:`100 - x` /]
+
+Update x:
+
+0 [Range min:0 max:100 value:x /] 100
+
+Value of x: [Display value:x /]
+Value of y: [Display value:y /]
+
+[Aside]
+```
+  [ReactSimplePieChart
+    slices:`[{
+      color: '#7b3af5',
+      value: x,
+    }, {
+      color: '#EAE7D6',
+      value: y, },
+    ]`
+  /]
+```
+[/Aside]
+
+Variables can also be passed directly into components (edit the slider above to see the pie below change).
+
+[div className:'simplePieChart' ]
+  [ReactSimplePieChart
+    slices:`[{
+      color: '#7b3af5',
+      value: x,
+    }, {
+      color: '#EAE7D6',
+      value: y, },
+    ]`
+  /]
+[/div]
+
+## Custom Components and D3
+
+Idyll also exposes a custom `D3Component` that can be extended to create custom d3 components.
+To utilize this, you need to create a new component in `/components` and implement two methods: `initialize` and `update`.
+This is consistent with Mike Bostock's move towards [link text:"reusable chart components" url:"https://bost.ocks.org/mike/chart/" /].
+
+[gist gist:"e583bc2d6143ab867bab73701762af00" file:"idyll-d3.jsx" /]
+
+In these two methods, you can embed your D3 code to initialize your D3 chart and update it in response to changed props.
+Given that Idyll is built on top of React, it utilizes the same rendering cycle, updating components on change passes props.
+The `node` passed in the initialize method is always a passed `div` representing the current custom element.
+
+In using `idyll create`, we scaffolded a custom d3 component already in the `/components` directory.
+Idyll defaults to this folder to parse component names, so you can directly embed components by their name in your markup.
+
+[Aside]
+```
+[CustomD3Component/]
+```
+[/Aside]
+
+[CustomD3Component/]
+
+Since we can pass variables as custom props in components, we can extend our D3 code to utilize Idyll variables to our custom D3 component.
+These variables are passed in the `props` argument.
+You can access `x` and `y` in `/components/custom-d3-component.js` with `props.x` or `props.y`.
+
+[Aside]
+```
+[CustomD3Component x:x y:y /]
+```
+[/Aside]
+
+[CustomD3Component x:x y:y /]
+
+Unfortunately, Idyll doesn't yet support embedding derived tables or arrays of data, so we if we wanted to have a derived prop,
+we have to make due with the object literal (for more on object literals [link text:"read this" url:"https://dev.to/sarah_chima/enhanced-object-literals-in-es6-a9d" /]).
+
+You'll see in the chart below that the position of the circle is directly tied to the data passed as a prop.
+
+[Aside]
+```
+[CustomD3Component data:`{x: x, y: y}` /]
+```
+[/Aside]
+
+Update x:
+
+0 [Range min:0 max:100 value:x /] 100
+
+[CustomD3Component data:`{x: x, y: y}` /]
+
+Custom D3 components can be as simple or complex as you make them.
+
+
+## A Custom Component Example: Lissajous Curve
+
+[Aside]
+```
+[var name:"a" value:5 /]
+[var name:"b" value:5 /]
+[var name:"step" value:0.01 /]
+
+1 [Range min:1 max:10 value:a /] 10, a: [Display value:a /]
+1 [Range min:1 max:10 value:b /] 10, b: [Display value:b /]
+
+0.01 [Range min:0.01 max:1.00 value:step step:0.01 /] 1.00
+step size: [Display value:step /]
+
+[LissajousCurve a:a b:b step:step /]
+```
+[/Aside]
+
+In this next example, we will be visualizing a [link text:"lissajous curve" url:"https://en.wikipedia.org/wiki/Lissajous_curve" /]
+and controlling it with variables and sliders similar to above.
+It is important to note that Idyll supports many events, not necessarily just sliders as an interaction.
+
+A lissajous curve is a parametric curve that follows the formula:
+
+[Equation]
+  x=A\sin(at+\delta ),\quad y=B\sin(bt)
+[/Equation]
+
+[var name:"a" value:5 /]
+[var name:"b" value:5 /]
+[var name:"step" value:0.01 /]
+
+1 [Range min:1 max:10 value:a /] 10, a: [Display value:a /]
+
+1 [Range min:1 max:10 value:b /] 10, b: [Display value:b /]
+
+0.01 [Range min:0.01 max:1.00 value:step step:0.01 /] 1.00, step size: [Display value:step /]
+
+[LissajousCurve a:a b:b step:step /]
+
+[link text:"Here is the gist" url:"https://gist.github.com/fmnguyen/f778219e2fe7bce855cf2d28e87e0a38" /] for this component.
+
+
+## Learn More
+
+To learn more see the documentation at [https://idyll-lang.org/docs](https://idyll-lang.org/docs/), join the [chatroom](https://gitter.im/idyll-lang/Lobby),
+or see the project on [GitHub](https://github.com/idyll-lang/idyll).

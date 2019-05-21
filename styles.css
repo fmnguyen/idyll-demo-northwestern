@@ -1,0 +1,83 @@
+body {
+  font-family: 'Source Sans Pro';
+}
+
+.idyll-root {
+  max-width: 90vw;
+  margin-left: 10vw;
+}
+
+.d3-component svg {
+  background: #ddd;
+  max-height: 300px;
+}
+
+@media all and (max-width: 1000px) {
+  .d3-component svg {
+    max-height: 200px;
+  }
+}
+
+@media all and (min-width: 1280px) {
+  .aside {
+    width: 600px;
+    right: calc((10vw + 1200px + 150px) / -2);
+  }
+
+}
+
+.article-header {
+  margin-bottom: 0;
+}
+
+small {
+  font-size: small;
+  font-style: italic;
+}
+
+pre {
+  background: #F99F58;
+  display: block;
+  overflow-x: auto;
+  padding: 0.5em;
+  color: #333;
+  border-radius: 0;
+}
+
+pre code {
+  background: #FFF;
+  color: black;
+  padding: 20px 15px;
+  width: 100%;
+  display: block;
+  overflow-x: auto;
+  font-size: 12px;
+  text-align: initial;
+  font-style: normal;
+  border-radius: 0;
+}
+
+.dek,
+.byline,
+.article-header a {
+  color: #007652;
+  font-family: 'Montserrat';
+}
+
+a {
+  color: #F99F58;
+}
+
+img {
+  max-width: 150px;
+}
+
+.simplePieChart {
+  max-width: 200px;
+}
+
+.gist-data tr,
+.gist-data td {
+  border: none;
+  color: white;
+}
